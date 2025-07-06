@@ -1,5 +1,6 @@
 # Krithin Arukala, PyForMLEng, Assignment 1
-# script scores the sentiment of headlines using a pre-trained SVM model and SentenceTransformer embeddings.
+# script scores the sentiment of headlines using 
+# a pre-trained SVM model and SentenceTransformer embeddings.
 '''
 This script takes an input file containing headlines and a source identifier,
 then processes the headlines to generate sentiment scores using a pre-trained SVM model.
@@ -7,14 +8,15 @@ It saves the sentiment scores along with the headlines to an output file.
 '''
 import argparse
 import datetime
-import joblib
 import sys
+import joblib
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
 def main(input_file, source):
     '''
-    Main function to process the input file, generate embeddings, and predict sentiment scores.
+    Main function to process the input file, 
+    generate embeddings, and predict sentiment scores.
     Args:
         input_file (str): Path to the input text file containing headlines.
         source (str): Source identifier for the headlines, e.g., 'nyt', 'chicagotribune', etc.
@@ -50,18 +52,23 @@ def main(input_file, source):
 
 if __name__ == "__main__":
     # arg parse for command line arguments
-    parser = argparse.ArgumentParser(description="identify the sentiment of headlines with an SVM model")
+    parser = argparse.ArgumentParser(description="identify the sentiment " \
+    "of headlines with an SVM model")
 
     # input file and source arguments
-    parser.add_argument("input_file", help="this is the path to the input text file with the headlines")
-    parser.add_argument("source", help="this is the source of the headlines, such as 'nyt', 'chicagotribune', 'latimes', etc.")
+    parser.add_argument("input_file", help="this is the path to the " \
+    "input text file with the headlines")
+    parser.add_argument("source", help="this is the source of the " \
+    "headlines, such as 'nyt', 'chicagotribune', 'latimes', etc.")
 
     # parsing the arguments
     args = parser.parse_args()
 
     # check if input file exists
     if not args.input_file or not args.source:
-        print("Issue: 'input_file' and 'source' arguments are required. Please ensure the format is as follows: python score_headlines.py <input_file> <source>")
+        print("Issue: 'input_file' and 'source' arguments are required. " \
+        "Please ensure the format is as follows: " \
+        "python score_headlines.py <input_file> <source>")
         sys.exit(1)
 
     # call the main function with parsed arguments
