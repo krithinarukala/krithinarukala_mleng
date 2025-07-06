@@ -8,6 +8,7 @@ It saves the sentiment scores along with the headlines to an output file.
 import argparse
 import datetime
 import joblib
+import sys
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
