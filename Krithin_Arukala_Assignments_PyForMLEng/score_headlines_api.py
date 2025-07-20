@@ -1,5 +1,11 @@
-# score_headlines_api.py
-
+# Krithin Arukala, PyForMLEng, Assignment 2
+# the script scores the sentiment of headlines using
+# a pre-trained SVM model and SentenceTransformer embeddings.
+'''
+This script takes a list of headlines via a POST request,
+scores their sentiment using a pre-trained SVM model,
+and returns the sentiment labels.
+'''
 import logging
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -8,6 +14,7 @@ import joblib
 from sentence_transformers import SentenceTransformer
 import uvicorn
 
+# configure logging settings
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s"
@@ -18,12 +25,12 @@ app = FastAPI()
 
 # try to load up the models
 try:
-    logging.info("Loading models...")
+    logging.info("We are loading the models...")
     clf = joblib.load("svm.joblib")
     model = SentenceTransformer("all-MiniLM-L6-v2")
-    logging.info("Models loaded successfully.")
+    logging.info("We have successfully loaded the models.")
 except Exception as e:
-    logging.critical(f"Failed to load models: {e}")
+    logging.critical(f"failed to load model: {e}")
     raise
 
 # define what we're expecting in the request body
@@ -33,16 +40,16 @@ class HeadlinesRequest(BaseModel):
 # checking health of request
 @app.get("/status")
 async def status():
-    logging.info("Health check requested.")
+    logging.info("Received request to check service status.")
     return {"status": "OK"}
 
 # scoring endpoint
 @app.post("/score_headlines")
 async def score_headlines(request: HeadlinesRequest):
-    logging.info(f"Received request to score {len(request.headlines)} headlines.")
+    logging.info(f"Received request to score the headlines.")
 
     if not request.headlines:
-        logging.warning("Empty headline list received.")
+        logging.warning("Received empty headlines list.")
         return {"labels": []}
 
     try:
@@ -53,6 +60,5 @@ async def score_headlines(request: HeadlinesRequest):
         return {"labels": labels}
 
     except Exception as e:
-        logging.error(f"Error during scoring: {e}")
+        logging.error(f"error during scoring: {e}")
         return {"error": "Internal server error"}
-
