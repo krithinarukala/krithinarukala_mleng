@@ -27,8 +27,8 @@ for i, headline in enumerate(st.session_state.headlines):
     with col1:
         # text input for headline
         st.session_state.headlines[i] = st.text_input(
-            f"Headline {i+1}", 
-            value=headline, 
+            f"Headline {i+1}",
+            value=headline,
             key=f"headline_{i}")
     with col2:
         # delete button for headline
@@ -53,7 +53,7 @@ if st.button("Analyze Sentiment of Headline(s)"):
     else:
         # filter out empty headlines
         headlines_with_values = [
-            h for h in st.session_state.headlines 
+            h for h in st.session_state.headlines
             if h.strip()]
         # send headlines to the API
         try:
@@ -67,13 +67,13 @@ if st.button("Analyze Sentiment of Headline(s)"):
                 st.success("sentiment results:")
                 # for each headline and its corresponding label
                 for headline, label in zip(
-                    headlines_with_values, 
+                    headlines_with_values,
                     result["labels"]):
                     # display the headline with its sentiment label
                     st.write(f"**{headline}** ➝ *headline sentiment: {label}*")
             else:
                 # display an error message if the API resp is invalid
-                st.error("an error has occurred: " 
+                st.error("an error has occurred: "
                          + result.get("error", "Unknown error"))
         # handle exceptions during the API request
         except requests.exceptions.RequestException as e:
