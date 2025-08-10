@@ -10,12 +10,13 @@ and display the sentiment results.
 import streamlit as st
 import requests
 # establish API endpoint (adjust the port if needed)
-url_for_api = "http://localhost:8001/score_headlines"
+URL_FOR_API = "http://localhost:8001/score_headlines"
 # initialize session state for headlines
 if "headlines" not in st.session_state:
     st.session_state.headlines = [""]
 # set page title
-st.title("Sentiment Analysis of Headlines - Krithin Arukala - Assignment 3")
+st.title("Sentiment Analysis of Headlines "
+"- Krithin Arukala - Assignment 3")
 # instructional text for users to enter headlines
 st.subheader("Enter headlines:")
 # display inputs for each headline that the users can edit
@@ -25,7 +26,10 @@ for i, headline in enumerate(st.session_state.headlines):
     # headline input
     with col1:
         # text input for headline
-        st.session_state.headlines[i] = st.text_input(f"Headline {i+1}", value=headline, key=f"headline_{i}")
+        st.session_state.headlines[i] = st.text_input(
+            f"Headline {i+1}", 
+            value=headline, 
+            key=f"headline_{i}")
     with col2:
         # delete button for headline
         if st.button("Remove", key=f"delete_{i}"):
@@ -48,11 +52,15 @@ if st.button("Analyze Sentiment of Headline(s)"):
     # if there are headlines to analyze
     else:
         # filter out empty headlines
-        headlines_with_values = [h for h in st.session_state.headlines if h.strip()]
+        headlines_with_values = [
+            h for h in st.session_state.headlines 
+            if h.strip()]
         # send headlines to the API
         try:
             # make a POST request to the API with the headlines
-            resp = requests.post(url_for_api, json={"headlines": headlines_with_values})
+            resp = requests.post(URL_FOR_API, 
+                                 json={"headlines": headlines_with_values}
+                                 timeout=10)
             # parse the JSON resp
             result = resp.json()
             # check if the resp contains sentiment labels
@@ -60,13 +68,16 @@ if st.button("Analyze Sentiment of Headline(s)"):
                 # display the sentiment results
                 st.success("sentiment results:")
                 # for each headline and its corresponding label
-                for headline, label in zip(headlines_with_values, result["labels"]):
+                for headline, label in zip(
+                    headlines_with_values, 
+                    result["labels"]):
                     # display the headline with its sentiment label
                     st.write(f"**{headline}** ➝ *headline sentiment: {label}*")
             else:
                 # display an error message if the API resp is invalid
-                st.error("an error has occurred: " + result.get("error", "Unknown error"))
+                st.error("an error has occurred: " 
+                         + result.get("error", "Unknown error"))
         # handle exceptions during the API request
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             # display an error message if the API request fails
             st.error(f"the system failed to connect to the API, see error: {e}")
