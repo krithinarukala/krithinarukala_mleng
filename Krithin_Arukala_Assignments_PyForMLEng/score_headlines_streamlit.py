@@ -58,9 +58,7 @@ if st.button("Analyze Sentiment of Headline(s)"):
         # send headlines to the API
         try:
             # make a POST request to the API with the headlines
-            resp = requests.post(URL_FOR_API, 
-                                 json={"headlines": headlines_with_values}
-                                 timeout=10)
+            resp = requests.post(URL_FOR_API, json={"headlines": headlines_with_values}, timeout=10)
             # parse the JSON resp
             result = resp.json()
             # check if the resp contains sentiment labels
